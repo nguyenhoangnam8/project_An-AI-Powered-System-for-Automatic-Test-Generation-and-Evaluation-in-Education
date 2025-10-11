@@ -1,0 +1,67 @@
+server:
+  port: 9999
+
+app:
+  api-prefix: /api/v1
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: identity_service
+          uri: http://localhost:9195
+          predicates:
+            - Path=${app.api-prefix}/identity/**
+          filters:
+            - StripPrefix=2
+        - id: notification_service
+          uri: http://localhost:9191
+          predicates:
+            - Path=${app.api-prefix}/notification/**
+          filters:
+            - StripPrefix=2
+        - id: quiz_service
+          uri: http://localhost:9192
+          predicates:
+            - Path=${app.api-prefix}/quiz/**
+          filters:
+            - StripPrefix=2
+        - id: profile_service
+          uri: http://localhost:9193
+          predicates:
+            - Path=${app.api-prefix}/profile/**
+          filters:
+            - StripPrefix=2
+        - id: Ai_service
+          uri: http://localhost:9194
+          predicates:
+            - Path=${app.api-prefix}/Ai/**
+          filters:
+            - StripPrefix=2
+        - id: Admin_service
+          uri: http://localhost:9196
+          predicates:
+            - Path=${app.api-prefix}/admin/**
+          filters:
+            - StripPrefix=2
+# Swagger UI aggregation on Gateway
+springdoc:
+  swagger-ui:
+    urls:
+      - name: identity-service
+        url: ${app.api-prefix}/identity/v3/api-docs
+      - name: quiz-service
+        url: ${app.api-prefix}/quiz/v3/api-docs
+      - name: notification-service
+        url: ${app.api-prefix}/notification/v3/api-docs
+      - name: profile-service
+        url: ${app.api-prefix}/profile/v3/api-docs
+      - name: Ai-service
+        url: ${app.api-prefix}/Ai/v3/api-docs
+      - name: admin-service
+        url: ${app.api-prefix}/admin/v3/api-docs
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true

@@ -1,0 +1,47 @@
+server:
+  port: 9999
+app:
+  api-prefix: /api/v1
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: identity_service
+          uri: http://localhost:9195
+          predicates:
+            - Path=${app.api-prefix}/identity/**
+          filters:
+            - StripPrefix=2
+        - id: notification_service
+          uri: http://localhost:9191
+          predicates:
+            - Path=${app.api-prefix}/notification/**
+          filters:
+            - StripPrefix=2
+        - id: quiz_service
+          uri: http://localhost:9192
+          predicates:
+            - Path=${app.api-prefix}/quiz/**
+          filters:
+            - StripPrefix=2
+        - id: profile_service
+          uri: http://localhost:9193
+          predicates:
+            - Path=${app.api-prefix}/profile/**
+          filters:
+            - StripPrefix=2
+        - id: Ai_service
+          uri: http://localhost:9194
+          predicates:
+            - Path=${app.api-prefix}/Ai/**
+          filters:
+            - StripPrefix=2
+        - id: Admin_service
+          uri: http://localhost:9196
+          predicates:
+            - Path=${app.api-prefix}/admin/**
+          filters:
+            - StripPrefix=2
+#https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway/request-predicates-factories.html
